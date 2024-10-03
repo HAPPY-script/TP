@@ -7,14 +7,12 @@ local TextBox = Instance.new("TextBox")
 local UICorner_3 = Instance.new("UICorner")
 local TextButton = Instance.new("TextButton")
 local UICorner_4 = Instance.new("UICorner")
-local toggleButton = Instance.new("TextButton")
-local UICorner_5 = Instance.new("UICorner")
 local closeButton = Instance.new("TextButton")
-local UICorner_6 = Instance.new("UICorner")
+local UICorner_5 = Instance.new("UICorner")
 local tpTypeButton = Instance.new("TextButton")
-local UICorner_7 = Instance.new("UICorner")
+local UICorner_6 = Instance.new("UICorner")
 local tpMenuFrame = Instance.new("Frame")
-local UICorner_8 = Instance.new("UICorner")
+local UICorner_7 = Instance.new("UICorner")
 local tpOptions = {"TP Trên Đầu", "TP Đằng Trước", "TP Đằng Sau", "TP Bên Trái", "TP Bên Phải", "TP Sát"}
 
 -- Properties:
@@ -30,7 +28,6 @@ Frame.Position = UDim2.new(0.383799434, 0, 0.17944786, 0)
 Frame.Size = UDim2.new(0, 339, 0, 264)
 Frame.Active = true
 Frame.Draggable = true
-Frame.Visible = false  -- Đặt Frame không hiển thị ban đầu
 
 UICorner.CornerRadius = UDim.new(0, 25)
 UICorner.Parent = Frame
@@ -79,20 +76,6 @@ TextButton.TextSize = 14.000
 UICorner_4.CornerRadius = UDim.new(0, 25)
 UICorner_4.Parent = TextButton
 
-toggleButton.Parent = Frame
-toggleButton.BackgroundColor3 = Color3.fromRGB(255, 165, 0)
-toggleButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-toggleButton.BorderSizePixel = 0
-toggleButton.Position = UDim2.new(0.9, 0, 0, 0)
-toggleButton.Size = UDim2.new(0, 30, 0, 30)
-toggleButton.Font = Enum.Font.SourceSans
-toggleButton.Text = "-"
-toggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-toggleButton.TextSize = 20.000
-
-UICorner_5.CornerRadius = UDim.new(0, 15)
-UICorner_5.Parent = toggleButton
-
 closeButton.Parent = Frame
 closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 closeButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -104,8 +87,8 @@ closeButton.Text = "X"
 closeButton.TextColor3 = Color3.fromRGB(0, 0, 0)
 closeButton.TextSize = 20.000
 
-UICorner_6.CornerRadius = UDim.new(0, 15)
-UICorner_6.Parent = closeButton
+UICorner_5.CornerRadius = UDim.new(0, 15)
+UICorner_5.Parent = closeButton
 
 tpTypeButton.Parent = Frame
 tpTypeButton.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
@@ -118,8 +101,8 @@ tpTypeButton.Text = "Chọn Kiểu TP"
 tpTypeButton.TextColor3 = Color3.fromRGB(0, 0, 0)
 tpTypeButton.TextSize = 14.000
 
-UICorner_7.CornerRadius = UDim.new(0, 15)
-UICorner_7.Parent = tpTypeButton
+UICorner_6.CornerRadius = UDim.new(0, 15)
+UICorner_6.Parent = tpTypeButton
 
 tpMenuFrame.Parent = Frame
 tpMenuFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -127,8 +110,8 @@ tpMenuFrame.Position = UDim2.new(0.2, 0, 0.3, 0)
 tpMenuFrame.Size = UDim2.new(0, 150, 0, 220)
 tpMenuFrame.Visible = false
 
-UICorner_8.CornerRadius = UDim.new(0, 15)
-UICorner_8.Parent = tpMenuFrame
+UICorner_7.CornerRadius = UDim.new(0, 15)
+UICorner_7.Parent = tpMenuFrame
 
 local tpButtons = {}
 for i, option in ipairs(tpOptions) do
@@ -151,43 +134,7 @@ end
 
 local isTeleporting = false
 local teleportConnection
-
-local function createKeyInput()
-    local keyFrame = Instance.new("Frame", ScreenGui)
-    keyFrame.Size = UDim2.new(0, 300, 0, 200)
-    keyFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
-    keyFrame.BackgroundColor3 = Color3.new(1, 1, 1)
-
-    local inputBox = Instance.new("TextBox", keyFrame)
-    inputBox.Size = UDim2.new(1, 0, 0.2, 0)
-    inputBox.Position = UDim2.new(0, 0, 0.2, 0)
-    inputBox.PlaceholderText = "Nhập key ở đây"
-    inputBox.TextScaled = true
-
-    local submitButton = Instance.new("TextButton", keyFrame)
-    submitButton.Size = UDim2.new(1, 0, 0.2, 0)
-    submitButton.Position = UDim2.new(0, 0, 0.4, 0)
-    submitButton.Text = "Xác Nhận"
-    submitButton.BackgroundColor3 = Color3.new(0, 0.78, 0)
-    submitButton.TextColor3 = Color3.new(1, 1, 1)
-
-    local errorLabel = Instance.new("TextLabel", keyFrame)
-    errorLabel.Size = UDim2.new(1, 0, 0.2, 0)
-    errorLabel.Position = UDim2.new(0, 0, 0.6, 0)
-    errorLabel.Text = ""
-    errorLabel.TextColor3 = Color3.new(1, 0, 0)
-    errorLabel.BackgroundTransparency = 1
-
-    submitButton.MouseButton1Click:Connect(function()
-        if inputBox.Text == "HAPPY_FAMILY" then
-            keyFrame:Destroy()
-            Frame.Visible = true
-        else
-            errorLabel.Text = "Key không đúng"
-            inputBox.Text = ""
-        end
-    end)
-end
+local teleportType = 1  -- Đặt giá trị mặc định cho kiểu TP
 
 TextButton.MouseButton1Down:Connect(function()
     local player = game.Players.LocalPlayer
@@ -214,45 +161,84 @@ TextButton.MouseButton1Down:Connect(function()
                 if player.Character and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
                     local targetPosition = targetPlayer.Character.HumanoidRootPart.Position
 
+                    -- Thay đổi vị trí tùy theo kiểu TP đã chọn
                     if teleportType == 1 then
-                        targetPosition = targetPosition + Vector3.new(0, 25, 0)  -- Trên đầu 25m
+                        -- TP trên đầu
+                        targetPosition = targetPosition + Vector3.new(0, 5, 0)  -- Trên 5m
                     elseif teleportType == 2 then
-                        targetPosition = targetPosition + targetPlayer.Character.HumanoidRootPart.CFrame.LookVector * 15  -- Trước 15m
+                        targetPosition = targetPosition + targetPlayer.Character.HumanoidRootPart.CFrame.LookVector * 5  -- Trước 5m
                     elseif teleportType == 3 then
-                        targetPosition = targetPosition - targetPlayer.Character.HumanoidRootPart.CFrame.LookVector * 15  -- Sau lưng 15m
+                        targetPosition = targetPosition - targetPlayer.Character.HumanoidRootPart.CFrame.LookVector * 5  -- Sau 5m
                     elseif teleportType == 4 then
-                        targetPosition = targetPosition - targetPlayer.Character.HumanoidRootPart.CFrame.RightVector * 15  -- Trái 15m
+                        targetPosition = targetPosition - targetPlayer.Character.HumanoidRootPart.CFrame.RightVector * 5  -- Bên trái 5m
                     elseif teleportType == 5 then
-                        targetPosition = targetPosition + targetPlayer.Character.HumanoidRootPart.CFrame.RightVector * 15  -- Phải 15m
+                        targetPosition = targetPosition + targetPlayer.Character.HumanoidRootPart.CFrame.RightVector * 5  -- Bên phải 5m
                     elseif teleportType == 6 then
-                        targetPosition = targetPosition  -- Sát
+                        targetPosition = targetPosition + Vector3.new(0, 0, 1)  -- Sát
                     end
 
-                    player.Character:SetPrimaryPartCFrame(CFrame.new(targetPosition))
+                    player.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
                 end
             end)
         end
     else
-        warn("Player not found")
+        print("Không tìm thấy người chơi với tên: " .. targetName)
     end
 end)
 
-toggleButton.MouseButton1Click:Connect(function()
-    if Frame.Size.Y.Offset == 264 then
-        Frame.Size = UDim2.new(0, 339, 0, 50)
-        toggleButton.Text = "+"
-    else
-        Frame.Size = UDim2.new(0, 339, 0, 264)
-        toggleButton.Text = "-"
-    end
+closeButton.MouseButton1Down:Connect(function()
+    ScreenGui:Destroy()
 end)
 
-closeButton.MouseButton1Click:Connect(function()
-    Frame:Destroy()
-end)
-
-tpTypeButton.MouseButton1Click:Connect(function()
+tpTypeButton.MouseButton1Down:Connect(function()
     tpMenuFrame.Visible = not tpMenuFrame.Visible
 end)
 
-createKeyInput()
+-- Nút ẩn
+local hideButton = Instance.new("TextButton")
+hideButton.Parent = Frame
+hideButton.BackgroundColor3 = Color3.fromRGB(255, 165, 0)
+hideButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+hideButton.BorderSizePixel = 0
+hideButton.Position = UDim2.new(0.75, 0, 0.05, 0) -- Di chuyển nút ẩn sang góc trên bên phải
+hideButton.Size = UDim2.new(0, 30, 0, 30)
+hideButton.Font = Enum.Font.SourceSans
+hideButton.Text = "Ẩn"
+hideButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+hideButton.TextSize = 20.000
+
+UICorner_5.CornerRadius = UDim.new(0, 15)
+UICorner_5.Parent = hideButton
+
+-- Menu nhỏ
+local smallMenu = Instance.new("Frame")
+smallMenu.Parent = ScreenGui
+smallMenu.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+smallMenu.Position = UDim2.new(0.5, -75, 0.5, -50)
+smallMenu.Size = UDim2.new(0, 150, 0, 100)
+smallMenu.Visible = false
+smallMenu.Active = true
+smallMenu.Draggable = true
+
+local smallMenuButton = Instance.new("TextButton")
+smallMenuButton.Parent = smallMenu
+smallMenuButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+smallMenuButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+smallMenuButton.BorderSizePixel = 0
+smallMenuButton.Size = UDim2.new(1, 0, 0, 40)
+smallMenuButton.Font = Enum.Font.SourceSans
+smallMenuButton.Text = "Hiện"
+smallMenuButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+smallMenuButton.TextSize = 20.000
+
+-- Hiện menu nhỏ
+hideButton.MouseButton1Down:Connect(function()
+    Frame.Visible = false
+    smallMenu.Visible = true
+end)
+
+-- Hiện lại menu chính
+smallMenuButton.MouseButton1Down:Connect(function()
+    smallMenu.Visible = false
+    Frame.Visible = true
+end)
